@@ -12,7 +12,7 @@
 <body>
     <main class="container">
         <header>
-            <h1>📝 Todo List</h1>
+            <h1><i data-lucide="list-todo"></i> Todo List</h1>
             <p>Stay organized and productive</p>
         </header>
 
@@ -23,7 +23,7 @@
                 placeholder="Enter your task..."
                 aria-label="New task"
             >
-            <button type="button" id="addBtn">Add</button>
+            <button type="button" id="addBtn"><i data-lucide="plus"></i> Add</button>
         </section>
 
         <section class="search-section" aria-label="Search tasks">
@@ -61,14 +61,16 @@
         </section>
 
         <div id="emptyState" aria-live="polite">
-            <div class="empty-icon" aria-hidden="true">📋</div>
+            <div class="empty-icon" aria-hidden="true">
+                <i data-lucide="clipboard-list"></i>
+            </div>
             <h2>No Tasks Yet</h2>
             <p>Add your first task to get started.</p>
         </div>
 
         <section class="footer-buttons" aria-label="Task actions">
-            <button type="button" id="deleteCompleted">Delete Completed</button>
-            <button type="button" id="deleteAll">Delete All</button>
+            <button type="button" id="deleteCompleted"><i data-lucide="check-check"></i> Delete Completed</button>
+            <button type="button" id="deleteAll"><i data-lucide="trash-2"></i> Delete All</button>
         </section>
     </main>
 
@@ -77,12 +79,14 @@
             <h2 id="editTitle">Edit Task</h2>
             <input type="text" id="editInput" aria-label="Task name">
             <div class="modal-buttons">
-                <button type="button" id="saveEdit">Save</button>
-                <button type="button" id="cancelEdit">Cancel</button>
+                            <button type="button" id="saveEdit"><i data-lucide="check"></i> Save</button>
+                            <button type="button" id="cancelEdit"><i data-lucide="x"></i> Cancel</button>
             </div>
         </div>
     </div>
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="script.js"></script>
 </body>
 </html>

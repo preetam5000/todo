@@ -361,3 +361,49 @@ header p {
         width: 90%;
     }
 }
+
+    /* Lucide Icons Styling */
+    [data-lucide] {
+        display: inline-block;
+        vertical-align: middle;
+        stroke-width: 2;
+        flex-shrink: 0;
+    }
+
+    header h1 [data-lucide] {
+        width: 36px;
+        height: 36px;
+        margin-right: 10px;
+        color: #4f46e5;
+    }
+
+    .todo-input button [data-lucide] {
+        width: 18px;
+        height: 18px;
+        margin-right: 6px;
+    }
+
+    .footer-buttons button [data-lucide] {
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+    }
+
+    .edit-btn [data-lucide],
+    .delete-btn [data-lucide] {
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+    }
+
+    .modal-buttons button [data-lucide] {
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+    }
+
+    .empty-icon [data-lucide] {
+        width: 80px;
+        height: 80px;
+        color: #ccc;
+    }

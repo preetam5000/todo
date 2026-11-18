@@ -89,13 +89,13 @@ function renderTodos() {
         const editBtn = document.createElement('button');
         editBtn.type = 'button';
         editBtn.className = 'edit-btn';
-        editBtn.textContent = 'Edit';
+                editBtn.innerHTML = '<i data-lucide="pencil"></i> Edit';
         editBtn.addEventListener('click', () => openEditModal(todo));
 
         const deleteBtn = document.createElement('button');
         deleteBtn.type = 'button';
         deleteBtn.className = 'delete-btn';
-        deleteBtn.textContent = 'Delete';
+                deleteBtn.innerHTML = '<i data-lucide="trash-2"></i> Delete';
         deleteBtn.addEventListener('click', () => {
             todos = todos.filter(task => task.id !== todo.id);
             saveTodos();
@@ -107,6 +107,8 @@ function renderTodos() {
         todoList.append(item);
     });
 
+            // Initialize Lucide icons for dynamically created elements
+            lucide.createIcons();
     updateStatistics();
 }
 
