@@ -27,21 +27,20 @@ function updateStatistics() {
 }
 
 function renderTodos() {
-    
     const searchText = searchInput.value.trim().toLowerCase();
-    // console.log(searchText)
     const visibleTodos = todos.filter(todo => {
-        console.log(todo.title)
         const matchesSearch = todo.title.toLowerCase().includes(searchText);
         const matchesFilter = currentFilter === 'all'
             || (currentFilter === 'active' && !todo.completed)
             || (currentFilter === 'completed' && todo.completed);
-
         return matchesSearch && matchesFilter;
     });
 
-    todoList.textContent = '';
-    emptyState.style.display = visibleTodos.length ? 'none' : 'block';
+    // Clear list
+    todoList.innerHTML = '';
+    
+    // Toggle empty state with animation class
+    emptyState.classList.toggle('visible', visibleTodos.length === 0);
 
     const emptyTitle = emptyState.querySelector('h2');
     const emptyMessage = emptyState.querySelector('p');
@@ -53,10 +52,13 @@ function renderTodos() {
         emptyMessage.textContent = 'Try changing your search or filter.';
     }
 
-    visibleTodos.forEach(todo => {
+    visibleTodos.forEach((todo, index) => {
         const item = document.createElement('li');
         item.className = 'todo-item';
+            item.dataset.id = todo.id; // Add data-id for reliable targeting
         if (todo.completed) item.classList.add('completed');
+        // Stagger animation delay
+        item.style.animationDelay = `${0.6 + index * 0.1}s`;
 
         const left = document.createElement('div');
         left.className = 'left';
@@ -64,7 +66,7 @@ function renderTodos() {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.checked = todo.completed;
-        checkbox.setAttribute('aria-label', `Mark ${todo.title} as completed`);
+        checkbox.setAttribute('aria-label', `Mark "${todo.title}" as ${todo.completed ? 'incomplete' : 'completed'}`);
         checkbox.addEventListener('change', () => {
             todo.completed = checkbox.checked;
             saveTodos();
@@ -89,27 +91,44 @@ function renderTodos() {
         const editBtn = document.createElement('button');
         editBtn.type = 'button';
         editBtn.className = 'edit-btn';
-                editBtn.innerHTML = '<i data-lucide="pencil"></i> Edit';
+        editBtn.innerHTML = '<i data-lucide="pencil"></i> Edit';
         editBtn.addEventListener('click', () => openEditModal(todo));
 
         const deleteBtn = document.createElement('button');
         deleteBtn.type = 'button';
         deleteBtn.className = 'delete-btn';
-                deleteBtn.innerHTML = '<i data-lucide="trash-2"></i> Delete';
-        deleteBtn.addEventListener('click', () => {
-            todos = todos.filter(task => task.id !== todo.id);
-            saveTodos();
-            renderTodos();
-        });
+        deleteBtn.innerHTML = '<i data-lucide="trash-2"></i> Delete';
+        deleteBtn.addEventListener('click', () => deleteTodoWithAnimation(todo.id));
 
         actions.append(editBtn, deleteBtn);
         item.append(left, actions);
         todoList.append(item);
     });
 
-            // Initialize Lucide icons for dynamically created elements
-            lucide.createIcons();
+    // Initialize Lucide icons for dynamically created elements
+    lucide.createIcons();
     updateStatistics();
+}
+
+function deleteTodoWithAnimation(id) {
+    const targetItemEl = todoList.querySelector(`[data-id="${id}"]`);
+    if (!targetItemEl) {
+        // Fallback: direct removal
+        todos = todos.filter(todo => todo.id !== id);
+        saveTodos();
+        renderTodos();
+        return;
+    }
+    
+    // Add removing animation class
+    targetItemEl.classList.add('removing');
+    
+    // Wait for animation to complete
+    targetItemEl.addEventListener('animationend', () => {
+        todos = todos.filter(todo => todo.id !== id);
+        saveTodos();
+        renderTodos();
+    }, { once: true });
 }
 
 function addTodo() {
@@ -119,13 +138,14 @@ function addTodo() {
         return;
     }
 
-    todos.push({
+    const newTodo = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
         title,
         completed: false,
         createdAt: new Date().toLocaleString()
-    });
+    };
 
+    todos.unshift(newTodo); // Add to beginning for better UX
     todoInput.value = '';
     saveTodos();
     renderTodos();
@@ -135,20 +155,16 @@ function addTodo() {
 function openEditModal(todo) {
     editingId = todo.id;
     editInput.value = todo.title;
-    editModal.style.display = 'flex';
+    editModal.classList.add('visible');
     editInput.focus();
+    editInput.select();
 }
 
 function closeEditModal() {
     editingId = null;
-    editModal.style.display = 'none';
+    editModal.classList.remove('visible');
     editInput.setCustomValidity('');
 }
-
-addBtn.addEventListener('click', addTodo);
-todoInput.addEventListener('keydown', event => {
-    if (event.key === 'Enter') addTodo();
-});
 
 searchInput.addEventListener('input', renderTodos);
 
@@ -201,4 +217,11 @@ editModal.addEventListener('click', event => {
     if (event.target === editModal) closeEditModal();
 });
 
+addBtn.addEventListener('click', addTodo);
+todoInput.addEventListener('keydown', event => {
+    if (event.key === 'Enter') addTodo();
+});
+
+// Initialize Lucide icons on load
+lucide.createIcons();
 renderTodos();
