@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>📝 Todo List</h1>
+            <p>Stay organized and productive</p>
+        </header>
+
+        <section class="todo-input" aria-label="Add a task">
+            <input
+                type="text"
+                id="todoInput"
+                placeholder="Enter your task..."
+                aria-label="New task"
+            >
+            <button type="button" id="addBtn">Add</button>
+        </section>
+
+        <section class="search-section" aria-label="Search tasks">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search tasks..."
+                aria-label="Search tasks"
+            >
+        </section>
+
+        <nav class="filters" aria-label="Filter tasks">
+            <button type="button" class="filter-btn active" data-filter="all">All</button>
+            <button type="button" class="filter-btn" data-filter="active">Active</button>
+            <button type="button" class="filter-btn" data-filter="completed">Completed</button>
+        </nav>
+
+        <section class="stats" aria-label="Task statistics">
+            <div class="stat-card">
+                <h3 id="totalTasks">0</h3>
+                <p>Total</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="completedTasks">0</h3>
+                <p>Completed</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="pendingTasks">0</h3>
+                <p>Pending</p>
+            </div>
+        </section>
+
+        <section aria-label="Tasks">
+            <ul id="todoList"></ul>
+        </section>
+
+        <div id="emptyState" aria-live="polite">
+            <div class="empty-icon" aria-hidden="true">📋</div>
+            <h2>No Tasks Yet</h2>
+            <p>Add your first task to get started.</p>
+        </div>
+
+        <section class="footer-buttons" aria-label="Task actions">
+            <button type="button" id="deleteCompleted">Delete Completed</button>
+            <button type="button" id="deleteAll">Delete All</button>
+        </section>
+    </main>
+
+    <div class="modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+        <div class="modal-content">
+            <h2 id="editTitle">Edit Task</h2>
+            <input type="text" id="editInput" aria-label="Task name">
+            <div class="modal-buttons">
+                <button type="button" id="saveEdit">Save</button>
+                <button type="button" id="cancelEdit">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
